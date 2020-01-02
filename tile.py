@@ -1,12 +1,17 @@
-class Tile:
+from buildings import Farm
+
+
+class Tile(object):
     '''Basic board game tile'''
 
     def __init__(self,
+                 location={'x': 0, 'y': 0},
                  type='generic',
                  resources=None,
                  sites=0,
                  buildings=[],
                  allows_movement=True):
+        self.location = location
         self.tile_type = type
         self.resources = resources
         self.sites = sites
@@ -16,11 +21,13 @@ class Tile:
     def build(self, building):
         if self.has_available_site():
             self.buildings.append(building)
+            building.build_at(self)
+            print(f'Built {building}')
         else:
             print('No available sites')
 
     def has_available_site(self):
-        return self.sites > 0 and self.sites < self.buildings
+        return self.sites > 0 and self.sites > len(self.buildings)
 
     def __print_sites(self):
         site_name = 'building site'
@@ -44,7 +51,7 @@ class Plain(Tile):
     __sites = 1
 
     def __init__(self, type=__tile_type, resources=__resources, sites=__sites):
-        super().__init__(type=type, resources=resources, sites=sites)
+        Tile.__init__(self, type=type, resources=resources, sites=sites)
 
 
 class Forest(Tile):
@@ -59,7 +66,7 @@ class Forest(Tile):
     __sites = 1
 
     def __init__(self, type=__tile_type, resources=__resources, sites=__sites):
-        super().__init__(type=type, resources=resources, sites=sites)
+        Tile.__init__(self, type=type, resources=resources, sites=sites)
 
 
 class Mountain(Tile):
@@ -73,15 +80,20 @@ class Mountain(Tile):
     __allows_movement = False
 
     def __init__(self, type=__tile_type, resources=__resources, sites=__sites, allows_movement=__allows_movement):
-        super().__init__(type=type, resources=resources, sites=sites, allows_movement=allows_movement)
+        Tile.__init__(self, type=type, resources=resources, sites=sites, allows_movement=allows_movement)
 
 
-t1 = Tile()
-t2 = Plain()
-t3 = Forest()
-t4 = Mountain()
+t1 = Plain()
+print(t1.buildings)
+print(t1.sites)
+print(t1.has_available_site())
 
-print(t1)
-print(t2)
-print(t3)
-print(t4)
+t1.build(Farm())
+
+print(t1.buildings)
+print(t1.sites)
+print(t1.has_available_site())
+
+[building.produce() for building in t1.buildings]
+[building.produce() for building in t1.buildings]
+[print(building.storage) for building in t1.buildings]

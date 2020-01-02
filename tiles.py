@@ -20,7 +20,7 @@ class Tile(object):
     def build(self, building):
         if self.has_available_site():
             self.buildings.append(building)
-            building.build_at(self)
+            building.create_at(self)
             print(f'Built {building}')
         else:
             print('No available sites')
@@ -47,7 +47,7 @@ class Plain(Tile):
     '''
     __tile_type = 'plain'
     __resources = 'food'
-    __sites = 1
+    __sites = 2
 
     def __init__(self, type=__tile_type, resources=__resources, sites=__sites):
         Tile.__init__(self, type=type, resources=resources, sites=sites)

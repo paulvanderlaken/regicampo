@@ -22,9 +22,13 @@ class Tile:
     def has_available_site(self):
         return self.sites > 0 and self.sites < self.buildings
 
+    def __print_sites(self):
+        site_name = 'building site'
+        return f'1 {site_name}' if self.sites == 1 else f'{self.sites} {site_name}s'
+
     def __repr__(self):
         tile = f'{self.tile_type} tile'
-        sites = f', with {self.sites} site{"s" if self.sites > 1 else ""}' if self.sites > 0 else ''
+        sites = f', with {self.__print_sites()}'
         return tile + sites
 
 
@@ -35,8 +39,11 @@ class Plain(Tile):
     * buildings
     * food farming
     '''
+    __tile_type = 'plain'
+    __resources = 'food'
+    __sites = 1
 
-    def __init__(self, type='plain', resources='food', sites=1):
+    def __init__(self, type=__tile_type, resources=__resources, sites=__sites):
         super().__init__(type=type, resources=resources, sites=sites)
 
 
@@ -47,8 +54,11 @@ class Forest(Tile):
     * food foraging
     * wood cutting
     '''
+    __tile_type = 'forest'
+    __resources = ['food', 'lumber']
+    __sites = 1
 
-    def __init__(self, type='forest', resources=['food', 'lumber'], sites=1):
+    def __init__(self, type=__tile_type, resources=__resources, sites=__sites):
         super().__init__(type=type, resources=resources, sites=sites)
 
 
@@ -57,13 +67,12 @@ class Mountain(Tile):
     Tile that allows
     * stone mining
     '''
+    __tile_type = 'mountain'
+    __resources = 'stone'
+    __sites = 1
+    __allows_movement = False
 
-    def __init__(self):
-        self.tile_type = 'mountain'
-        self.resources = ['stone']
-        self.building_site = None
-
-    def __init__(self, type='mountain', resources='stone', sites=1, allows_movement=False):
+    def __init__(self, type=__tile_type, resources=__resources, sites=__sites, allows_movement=__allows_movement):
         super().__init__(type=type, resources=resources, sites=sites, allows_movement=allows_movement)
 
 
